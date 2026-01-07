@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Data Centre Power Hierarchy</title>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="https://unpkg.com/cytoscape-expand-collapse/cytoscape-expand-collapse.js"></script>
+<style>
+body { font-family: sans-serif; }
+#cy { width: 100%; height: 95vh; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<h2>Data Centre Power Hierarchy</h2>
+<div id="cy"></div>
+<script>
+fetch('elements.json').then(r=>r.json()).then(elements=>{
+  var cy = cytoscape({
+    container: document.getElementById('cy'),
+    elements: elements,
+    style: [
+      { selector: 'node', style: { 'label': 'data(label)', 'text-valign': 'center', 'background-color': '#88c' }},
+      { selector: ':parent', style: { 'background-opacity': 0.2, 'background-color': '#ccc' }},
+      { selector: 'edge', style: { 'width': 2, 'line-color': '#999', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#999' }}
+    ],
+    layout: { name: 'breadthfirst', directed: true, padding: 10 }
+  });
+
+  var api = cy.expandCollapse({ layoutBy: { name: 'breadthfirst', directed: true } });
+  cy.nodes(':parent').forEach(n => api.collapse(n));
+});
+</script>
+</body>
+</html>
