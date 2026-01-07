@@ -30,6 +30,9 @@ fetch('elements.json').then(r=>r.json()).then(elements=>{
   // find root nodes (no parent)
   var roots = cy.nodes().filter(n => !n.data('parent'));
 
+  // explicitly expand root nodes
+  roots.forEach(r => api.expand(r));
+
   // collapse all compound nodes EXCEPT roots
   cy.nodes(':parent').not(roots).forEach(n => api.collapse(n));
 
