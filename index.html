@@ -27,7 +27,12 @@ fetch('elements.json').then(r=>r.json()).then(elements=>{
   });
 
   var api = cy.expandCollapse({ layoutBy: { name: 'breadthfirst', directed: true } });
-  cy.nodes(':parent').forEach(n => api.collapse(n));
+  // find root nodes (no parent)
+  var roots = cy.nodes().filter(n => !n.data('parent'));
+
+  // collapse all compound nodes EXCEPT roots
+  cy.nodes(':parent').not(roots).forEach(n => api.collapse(n));
+
 });
 </script>
 </body>
