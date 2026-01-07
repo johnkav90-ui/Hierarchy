@@ -35,11 +35,16 @@ fetch('elements.json').then(r=>r.json()).then(elements=>{
   // find root nodes
   var roots = cy.nodes().filter(n => !n.data('parent'));
 
-  // explicitly expand roots
+  // allow first render before collapsing
+setTimeout(() => {
+
+  // expand root nodes
   roots.forEach(r => api.expand(r));
 
   // collapse everything below roots
   cy.nodes(':parent').not(roots).forEach(n => api.collapse(n));
+
+}, 0);
 
   // 🔑 THIS IS THE IMPORTANT PART
   // toggle expand/collapse on click
